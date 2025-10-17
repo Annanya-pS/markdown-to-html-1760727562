@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Renderer</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Embedding custom CSS for styling -->
+    <style>
+        body {
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: #fff;
+            color: #333;
+        }
+        #markdown-output {
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1 class="text-center p-4">Markdown to HTML Renderer</h1>
+            <div id="markdown-output"></div>
+        </div>
+    </div>
+    
+    <!-- Importing marked.js and highlight.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                // Data URI of the Markdown content
+                const markdownDataUri = "data:text/markdown;base64,SW5wdXQubWQK";  // Base64-encoded content of input.md
+                const markdownContent = atob(markdownDataUri.split(",")[1]);
+
+                // Rendering Markdown to HTML
+                document.getElementById('markdown-output').innerHTML = marked(markdownContent);
+
+                // Applying syntax highlighting to all code blocks
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+            } catch (error) {
+                console.error('Error processing the Markdown:', error);
+                document.getElementById('markdown-output').innerHTML = '<p class="text-danger">Failed to load and process the Markdown content.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
